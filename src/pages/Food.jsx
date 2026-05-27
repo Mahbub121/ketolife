@@ -44,6 +44,12 @@ export default function Food() {
 
   const getMealEntries = (meal) => entries.filter((e) => e.meal === meal)
 
+  const mealLabels = {
+    'সকাল': t.meal_breakfast,
+    'দুপুর': t.meal_lunch,
+    'রাত': t.meal_dinner,
+  }
+
   return (
     <div className="min-h-screen bg-bg">
       <PageHeader title={t.food_tracker_title} />
@@ -146,7 +152,7 @@ export default function Food() {
                 }}
                 className="w-full flex items-center gap-2 px-4 py-3 tap border-b border-line last:border-b-0 font-hind text-sm text-[#2C3320]"
               >
-                {m} {t.add_for}
+                {mealLabels[m]}
               </button>
             ))}
           </div>

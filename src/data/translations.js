@@ -128,6 +128,9 @@ export const T = {
     items_count: 'টি আইটেম',
     no_food_for: 'এর খাবার যোগ করা হয়নি',
     add_for: 'এর জন্য',
+    meal_breakfast: 'সকালের জন্য',
+    meal_lunch: 'দুপুরের জন্য',
+    meal_dinner: 'রাতের জন্য',
 
     // ── FoodSearch ──
     search_placeholder: 'খাবারের নাম লিখুন...',
@@ -366,9 +369,12 @@ export const T = {
     // ── Food ──
     food_tracker_title: 'Food Tracker',
     total_label: 'Total',
-    items_count: 'items',
+    items_count: ' items',
     no_food_for: 'No food added for',
     add_for: 'for',
+    meal_breakfast: 'For Breakfast',
+    meal_lunch: 'For Lunch',
+    meal_dinner: 'For Dinner',
 
     // ── FoodSearch ──
     search_placeholder: 'Search food name...',

@@ -102,7 +102,7 @@ export default function Home() {
   const loadHistory = useFastStore((s) => s.loadHistory)
 
   const profile = useUserStore((s) => s.profile)
-  const { t } = useT()
+  const { t, lang } = useT()
 
   const timer = useFastingTimer()
   const { totals, targets, isLoading: statsLoading } = useDailyStats()
@@ -128,7 +128,9 @@ export default function Home() {
   }, [])
 
   // Name display
-  const displayName = profile?.name || t.dear_user
+  const displayName = profile
+    ? (lang === 'en' && profile.name_en ? profile.name_en : (profile.name_bn || t.dear_user))
+    : t.dear_user
   const greeting = getGreeting(t)
 
   // Hero ring stage markers (24h scale)
