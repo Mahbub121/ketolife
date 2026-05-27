@@ -146,15 +146,16 @@ export async function deleteFoodEntry(id) {
 }
 
 export async function searchFoodItems(query) {
-  const q = query.toLowerCase().trim()
-  if (!q) return []
+  if (!query || query.trim() === '') return []
+  const q = query.trim().toLowerCase()
   const all = await db.foodItems.toArray()
   return all
-    .filter(
-      (item) =>
-        item.name_bn.toLowerCase().includes(q) ||
-        item.name_en.toLowerCase().includes(q)
-    )
+    .filter((item) => {
+      const bn = (item.name_bn || '').toLowerCase()
+      const en = (item.name_en || '').toLowerCase()
+      const cat = (item.category || '').toLowerCase()
+      return bn.includes(q) || en.includes(q) || cat.includes(q)
+    })
     .slice(0, 30)
 }
 
