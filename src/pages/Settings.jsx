@@ -8,7 +8,6 @@ import {
   Database,
   ChevronRight,
   Palette,
-  Languages,
   Trash2,
   AlertTriangle,
 } from 'lucide-react'
@@ -36,7 +35,6 @@ export default function Settings() {
       label: t.preferences_section,
       items: [
         { icon: Palette, label: t.theme_item, path: '', meta: t.theme_value },
-        { icon: Languages, label: t.language_item, path: '', meta: t.language_value },
         { icon: Bell, label: t.notifications_item, path: '', meta: t.notifications_value },
       ],
     },

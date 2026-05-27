@@ -109,10 +109,12 @@ export const T = {
     target_weight_label: 'লক্ষ্য ওজন (kg)',
     daily_carbs_label: 'দৈনিক কার্ব লিমিট (g)',
     water_goal_label: 'পানির লক্ষ্য (ml)',
-    protocol_16_8: '১৬:৮ — ইন্টারমিটেন্ট',
+    protocol_16_8: '১৬:৮ — ইন্টারমিটেন্ট ফাস্টিং',
     protocol_18_6: '১৮:৬ — লীনগেইন্স',
     protocol_20_4: '২০:৪ — ওয়ান মিল',
-    protocol_omad: 'ওমাড (২৩:১)',
+    protocol_omad: '২৩:১ — একবেলা খাবার',
+    protocol_24h: '২৪:০ — ওয়ান মিল এ ডে',
+    protocol_custom: 'কাস্টম সময়',
     save_goals_btn: 'সেভ করুন',
 
     // ── DataExport ──
@@ -353,10 +355,12 @@ export const T = {
     target_weight_label: 'Target Weight (kg)',
     daily_carbs_label: 'Daily Carb Limit (g)',
     water_goal_label: 'Water Goal (ml)',
-    protocol_16_8: '16:8 — Intermittent',
+    protocol_16_8: '16:8 — Intermittent Fasting',
     protocol_18_6: '18:6 — Lean Gains',
     protocol_20_4: '20:4 — One Meal',
-    protocol_omad: 'OMAD (23:1)',
+    protocol_omad: '23:1 — One Meal A Day',
+    protocol_24h: '24:0 — One Meal A Day',
+    protocol_custom: 'Custom time',
     save_goals_btn: 'Save',
 
     // ── DataExport ──

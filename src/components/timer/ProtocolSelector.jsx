@@ -2,15 +2,15 @@ import { useState, useRef, useEffect } from 'react'
 import { Clock, ChevronDown } from 'lucide-react'
 
 const protocols = [
-  { label: '১৬:৮', sub: '16 / 8 — ইন্টারমিটেন্ট', hours: 16 },
-  { label: '১৮:৬', sub: '18 / 6 — লীনগেইন্স', hours: 18 },
-  { label: '২০:৪', sub: '20 / 4 — ওয়ান মিল', hours: 20 },
-  { label: '২৪:০', sub: '24h — ওয়ান মিল এ ডে', hours: 24 },
-  { label: 'ওমাড (OMAD)', sub: '২৩:১ — একবেলা খাবার', hours: 23 },
-  { label: 'কাস্টম', sub: 'আপনার ইচ্ছামত সময়', hours: 16 },
+  { label: '১৬:৮', key: 'protocol_16_8', hours: 16 },
+  { label: '১৮:৬', key: 'protocol_18_6', hours: 18 },
+  { label: '২০:৪', key: 'protocol_20_4', hours: 20 },
+  { label: '২৪:০', key: 'protocol_24h', hours: 24 },
+  { label: 'ওমাড (OMAD)', key: 'protocol_omad', hours: 23 },
+  { label: 'কাস্টম', key: 'protocol_custom', hours: 16 },
 ]
 
-export default function ProtocolSelector({ selected, onSelect }) {
+export default function ProtocolSelector({ selected, onSelect, t }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
 
@@ -53,7 +53,7 @@ export default function ProtocolSelector({ selected, onSelect }) {
               }`}
             >
               <span className="font-hind font-medium text-[#2C3320] text-sm">{p.label}</span>
-              <span className="font-hind text-xs text-muted">{p.sub}</span>
+              <span className="font-hind text-xs text-muted">{t[p.key]}</span>
               {selected === p.label && (
                 <div className="ml-auto w-2 h-2 rounded-full bg-primary" />
               )}

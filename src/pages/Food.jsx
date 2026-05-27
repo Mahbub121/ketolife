@@ -74,7 +74,7 @@ export default function Food() {
                 className="w-full flex items-center justify-between px-4 py-3 tap"
               >
                 <span className="font-hind font-semibold text-sm text-[#2C3320]">
-                  {meal}
+                  {mealLabels[meal]}
                   {mealEntries.length > 0 && (
                     <span className="font-number text-xs text-muted ml-1">
                       ({bengaliNumber(mealEntries.length)})

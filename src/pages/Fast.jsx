@@ -11,7 +11,7 @@ import { useT } from '../hooks/useTranslation'
 
 export default function Fast() {
   const nav = useNavigate()
-  const { t } = useT()
+  const { t, lang } = useT()
   const { activeFast, startFast, endFast, pauseFast, resumeFast } = useFastStore()
   const timer = useFastingTimer()
   const [protocol, setProtocol] = useState('১৬:৮')
@@ -32,8 +32,8 @@ export default function Fast() {
   }
   const handleEnd = () => endFast()
 
-  const stageBn = timer.currentStage?.bn || ''
-  const stageSubBn = timer.currentStage?.sub_bn || ''
+  const stageLabel = lang === 'en' ? timer.currentStage?.en || '' : timer.currentStage?.bn || ''
+  const stageSubLabel = lang === 'en' ? timer.currentStage?.sub_en || '' : timer.currentStage?.sub_bn || ''
 
   return (
     <div className="min-h-screen bg-bg">
@@ -54,8 +54,8 @@ export default function Fast() {
         {/* Ring */}
         <BigStageRing
           progress={timer.progress}
-          stageLabel={stageBn}
-          stageSubLabel={stageSubBn}
+          stageLabel={stageLabel}
+          stageSubLabel={stageSubLabel}
           elapsedFormatted={timer.formattedElapsed}
           isFastingActive={timer.isFasting}
         />
@@ -63,7 +63,7 @@ export default function Fast() {
         {/* Next stage hint */}
         {timer.isFasting && timer.nextStage && (
           <p className="font-hind text-sm text-muted text-center">
-            {t.target_prefix} {timer.nextStage.bn} — {bengaliNumber(Math.round(timer.nextStage.h))} {t.hours_unit}
+            {t.target_prefix} {lang === 'en' ? timer.nextStage.en : timer.nextStage.bn} — {bengaliNumber(Math.round(timer.nextStage.h))} {t.hours_unit}
           </p>
         )}
 
@@ -82,7 +82,7 @@ export default function Fast() {
             <label className="font-hind text-sm font-medium text-muted mb-1.5 block">
               {t.protocol_label}
             </label>
-            <ProtocolSelector selected={protocol} onSelect={setProtocol} />
+            <ProtocolSelector selected={protocol} onSelect={setProtocol} t={t} />
           </div>
         )}
 
