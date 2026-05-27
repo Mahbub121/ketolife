@@ -4,12 +4,14 @@ import { Search, X, Plus, ChevronRight } from 'lucide-react'
 import PageHeader from '../components/layout/PageHeader'
 import { searchFoodItems, addFoodEntry } from '../db/dexie'
 import db from '../db/dexie'
+import { useT } from '../hooks/useTranslation'
 import bengaliNumber from '../utils/bengaliNumber'
 
 export default function FoodSearch() {
   const nav = useNavigate()
   const [searchParams] = useSearchParams()
   const meal = searchParams.get('meal') || 'সকাল'
+  const { t } = useT()
 
   const timerRef = useRef(null)
   const [query, setQuery] = useState('')
@@ -58,7 +60,7 @@ export default function FoodSearch() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title={`${meal} এর জন্য খাবার`} showBack />
+      <PageHeader title={`${meal} ${t.add_for} ${t.food_label}`} showBack />
 
       <div className="px-4 pt-4 pb-8">
         {/* Search input */}
@@ -68,7 +70,7 @@ export default function FoodSearch() {
             type="text"
             value={query}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="খাবারের নাম লিখুন..."
+            placeholder={t.search_placeholder}
             className="w-full bg-surface border border-line rounded-xl pl-10 pr-10 py-3 font-hind text-sm text-[#2C3320] placeholder:text-muted outline-none focus:border-primary"
           />
           {query && (
@@ -92,7 +94,7 @@ export default function FoodSearch() {
         >
           <div className="flex items-center gap-2">
             <Plus size={18} className="text-primary" />
-            <span className="font-hind text-sm font-medium text-primary">কাস্টম খাবার তৈরি করুন</span>
+            <span className="font-hind text-sm font-medium text-primary">{t.custom_food_link}</span>
           </div>
           <ChevronRight size={16} className="text-primary" />
         </button>
@@ -101,14 +103,14 @@ export default function FoodSearch() {
         {query && results.length === 0 && (
           <div className="flex flex-col items-center py-8">
             <Search size={32} className="text-line mb-2" />
-            <p className="font-hind text-sm text-muted">কোনো খাবার পাওয়া যায়নি</p>
+            <p className="font-hind text-sm text-muted">{t.no_results}</p>
           </div>
         )}
 
         {!query && !selectedFood && (
           <div className="flex flex-col items-center py-8">
             <Search size={32} className="text-line mb-2" />
-            <p className="font-hind text-sm text-muted">খাবার খুঁজতে টাইপ করুন</p>
+            <p className="font-hind text-sm text-muted">{t.search_hint}</p>
           </div>
         )}
 
@@ -144,10 +146,10 @@ export default function FoodSearch() {
             </div>
 
             <p className="font-hind text-xs text-muted mb-3">
-              ১০০g তে · C:{bengaliNumber(selectedFood.carbs_g)}g F:{bengaliNumber(selectedFood.fat_g)}g P:{bengaliNumber(selectedFood.protein_g)}g · {bengaliNumber(selectedFood.kcal)} kcal
+              {t.per_100g} · C:{bengaliNumber(selectedFood.carbs_g)}g F:{bengaliNumber(selectedFood.fat_g)}g P:{bengaliNumber(selectedFood.protein_g)}g · {bengaliNumber(selectedFood.kcal)} kcal
             </p>
 
-            <label className="font-hind text-sm font-medium text-muted mb-1 block">পরিমাণ (গ্রাম)</label>
+            <label className="font-hind text-sm font-medium text-muted mb-1 block">{t.portion_label}</label>
             <input
               type="number"
               min="5"
@@ -159,15 +161,15 @@ export default function FoodSearch() {
 
             <div className="bg-primary-tint rounded-lg px-3 py-2 mb-4">
               <p className="font-number text-xs text-primary font-medium">
-                কার্ব: {bengaliNumber(Math.round(scale(selectedFood.carbs_g || 0) * 10) / 10)}g ·
-                ফ্যাট: {bengaliNumber(Math.round(scale(selectedFood.fat_g || 0) * 10) / 10)}g ·
-                প্রোটিন: {bengaliNumber(Math.round(scale(selectedFood.protein_g || 0) * 10) / 10)}g ·
+                {t.carbs_label}: {bengaliNumber(Math.round(scale(selectedFood.carbs_g || 0) * 10) / 10)}g ·
+                {t.fat_label}: {bengaliNumber(Math.round(scale(selectedFood.fat_g || 0) * 10) / 10)}g ·
+                {t.protein_label}: {bengaliNumber(Math.round(scale(selectedFood.protein_g || 0) * 10) / 10)}g ·
                 {bengaliNumber(Math.round(scale(selectedFood.kcal || 0)))} kcal
               </p>
             </div>
 
             <p className="font-hind text-xs text-muted mb-3">
-              যুক্ত হবে: <span className="font-medium text-[#2C3320]">{meal}</span> এর খাবার হিসেবে
+              {t.added_as} <span className="font-medium text-[#2C3320]">{meal}</span> {t.as_food_for}
             </p>
 
             <button
@@ -175,7 +177,7 @@ export default function FoodSearch() {
               className="w-full bg-primary text-white font-hind font-semibold py-3 rounded-xl tap"
             >
               <Plus size={18} className="inline mr-1 mb-0.5" />
-              যোগ করুন
+              {t.add_btn}
             </button>
           </div>
         )}

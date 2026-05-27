@@ -3,9 +3,11 @@ import { Clock, CheckCircle2, XCircle } from 'lucide-react'
 import useFastStore from '../store/fastStore'
 import PageHeader from '../components/layout/PageHeader'
 import bengaliNumber from '../utils/bengaliNumber'
+import { useT } from '../hooks/useTranslation'
 
 export default function FastHistory() {
   const { history, loadHistory, isLoading } = useFastStore()
+  const { t } = useT()
 
   useEffect(() => {
     loadHistory(30)
@@ -18,17 +20,17 @@ export default function FastHistory() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title="ফাস্টিং হিস্ট্রি" showBack />
+      <PageHeader title={t.history_page_title} showBack />
 
       <div className="px-4 pt-4 pb-8">
         {isLoading && (
-          <p className="font-hind text-sm text-muted text-center py-8">লোড হচ্ছে...</p>
+          <p className="font-hind text-sm text-muted text-center py-8">{t.loading}</p>
         )}
 
         {!isLoading && history.length === 0 && (
           <div className="flex flex-col items-center py-12">
             <Clock size={48} className="text-line mb-3" />
-            <p className="font-hind text-base text-muted">কোনো ফাস্টিং রেকর্ড নেই</p>
+            <p className="font-hind text-base text-muted">{t.no_records}</p>
           </div>
         )}
 
@@ -49,7 +51,7 @@ export default function FastHistory() {
                   <CheckCircle2 size={20} className="text-success" />
                   <div>
                     <p className="font-hind font-medium text-[#2C3320] text-sm">
-                      {fast.protocol || 'ফাস্টিং'}
+                      {fast.protocol || t.default_protocol}
                     </p>
                     <p className="font-hind text-xs text-muted">
                       {formatDate(fast.startTime)}

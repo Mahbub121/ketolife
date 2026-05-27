@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Settings, ChevronRight, UtensilsCrossed, Droplets, Zap, Weight, Sparkles } from 'lucide-react'
+import { useT } from '../hooks/useTranslation'
 
 import useFastStore from '../store/fastStore'
 import useUserStore from '../store/userStore'
@@ -15,11 +16,11 @@ import { toBnNum } from '../utils/bengaliNumber'
 
 // ── Greeting ────────────────────────────────────────────────────────────
 
-function getGreeting() {
+function getGreeting(t) {
   const h = new Date().getHours()
-  if (h >= 5 && h < 12) return 'শুভ সকাল'
-  if (h >= 12 && h < 17) return 'শুভ অপরাহ্ণ'
-  return 'শুভ সন্ধ্যা'
+  if (h >= 5 && h < 12) return t.greet_morning
+  if (h >= 12 && h < 17) return t.greet_afternoon
+  return t.greet_evening
 }
 
 // ── Unique gradient ID for the hero mini ring ────────────────────────────
@@ -101,6 +102,7 @@ export default function Home() {
   const loadHistory = useFastStore((s) => s.loadHistory)
 
   const profile = useUserStore((s) => s.profile)
+  const { t } = useT()
 
   const timer = useFastingTimer()
   const { totals, targets, isLoading: statsLoading } = useDailyStats()
@@ -126,8 +128,8 @@ export default function Home() {
   }, [])
 
   // Name display
-  const displayName = profile?.name || 'প্রিয় ব্যবহারকারী'
-  const greeting = getGreeting()
+  const displayName = profile?.name || t.dear_user
+  const greeting = getGreeting(t)
 
   // Hero ring stage markers (24h scale)
   const ringStages = useMemo(
@@ -220,13 +222,13 @@ export default function Home() {
                     animation: 'pulse-soft 1.6s ease-in-out infinite',
                   }}
                 />
-                ফাস্টিং চলছে
+                {t.fasting_in_progress}
               </div>
               <p
                 className="font-hind text-[13px] font-medium mt-2"
                 style={{ color: 'var(--muted)' }}
               >
-                অতিবাহিত ·{' '}
+                {t.elapsed_prefix} ·{' '}
                 <span className="font-number">{activeFast?.protocol || '১৬:৮'}</span>
               </p>
             </div>
@@ -277,7 +279,7 @@ export default function Home() {
               {timer.nextStage && (
                 <StageRow
                   label={timer.nextStage.bn}
-                  sub={`পরবর্তী · ${fmtNextStage(nextStageRemaining)}`}
+                  sub={`${t.next_prefix} · ${fmtNextStage(nextStageRemaining)}`}
                   muted
                 />
               )}
@@ -304,7 +306,7 @@ export default function Home() {
                 color: 'var(--primary-deep)',
               }}
             >
-              খাওয়ার সময়
+              {t.eating_window}
             </div>
             <ChevronRight size={20} color="var(--muted)" />
           </div>
@@ -312,7 +314,7 @@ export default function Home() {
             className="font-hind text-[13px] font-medium mb-4"
             style={{ color: 'var(--muted)' }}
           >
-            বর্তমানে ফাস্ট চলছে না
+            {t.no_fast_active}
           </p>
           <button
             onClick={(e) => {
@@ -325,7 +327,7 @@ export default function Home() {
               boxShadow: '0 8px 18px -4px rgba(91,127,63,0.45)',
             }}
           >
-            ফাস্ট শুরু করুন
+            {t.start_fast}
           </button>
         </div>
       )}
@@ -341,10 +343,10 @@ export default function Home() {
       >
         <div className="flex items-baseline justify-between mb-3.5">
           <h3 className="font-hind text-[15px] font-bold" style={{ color: 'var(--text)' }}>
-            আজকের ম্যাক্রো
+            {t.todays_macros}
           </h3>
           <span className="font-number text-[12px] font-semibold" style={{ color: 'var(--muted)' }}>
-            {totals.kcal} / {targets.kcal} ক্যা
+            {totals.kcal} / {targets.kcal} {t.kcal_short}
           </span>
         </div>
 
@@ -354,7 +356,7 @@ export default function Home() {
             value={totals.carbs}
             target={targets.carbs}
             color={totals.carbs > targets.carbs ? 'var(--warning)' : 'var(--highlight)'}
-            label="নেট কার্ব"
+            label={t.net_carbs}
             big
           />
         </div>
@@ -365,13 +367,13 @@ export default function Home() {
             value={totals.fat}
             target={targets.fat}
             color="var(--accent)"
-            label="ফ্যাট"
+            label={t.fat}
           />
           <MacroBar
             value={totals.protein}
             target={targets.protein}
             color="var(--primary)"
-            label="প্রোটিন"
+            label={t.protein}
           />
         </div>
       </div>
@@ -379,13 +381,13 @@ export default function Home() {
       {/* ═══ Quick Add ═══ */}
       <div className="mb-4">
         <h3 className="font-hind text-[14px] font-bold mb-2.5" style={{ color: 'var(--text)' }}>
-          দ্রুত যোগ করুন
+          {t.quick_add}
         </h3>
         <div className="flex gap-2.5">
-          <QuickAddBtn icon={UtensilsCrossed} label="খাবার" color="var(--primary)" route="/food" />
-          <QuickAddBtn icon={Droplets} label="পানি" color="#5BA3D0" route="/water" />
-          <QuickAddBtn icon={Zap} label="কিটোন" color="var(--highlight)" route="/ketone" />
-          <QuickAddBtn icon={Weight} label="ওজন" color="var(--accent)" route="/weight" />
+          <QuickAddBtn icon={UtensilsCrossed} label={t.food_label} color="var(--primary)" route="/food" />
+          <QuickAddBtn icon={Droplets} label={t.water_label} color="#5BA3D0" route="/water" />
+          <QuickAddBtn icon={Zap} label={t.ketone_label} color="var(--highlight)" route="/ketone" />
+          <QuickAddBtn icon={Weight} label={t.weight_label} color="var(--accent)" route="/weight" />
         </div>
       </div>
 
@@ -416,7 +418,7 @@ export default function Home() {
               className="font-hind text-[12px] font-bold uppercase tracking-wide mb-1"
               style={{ color: 'var(--primary-deep)' }}
             >
-              আজকের পরামর্শ
+              {t.tip_of_day}
             </p>
             <p
               className="font-hind text-[13.5px] leading-relaxed"

@@ -4,10 +4,12 @@ import PageHeader from '../components/layout/PageHeader'
 import useSettingsStore from '../store/settingsStore'
 import { addWaterEntry, getTodayWater, deleteWaterEntry } from '../db/dexie'
 import bengaliNumber from '../utils/bengaliNumber'
+import { useT } from '../hooks/useTranslation'
 
 const quickAdds = [250, 500, 750, 1000]
 
 export default function Water() {
+  const { t } = useT()
   const waterGoal = useSettingsStore((s) => s.waterGoal)
   const [entries, setEntries] = useState([])
   const [customMl, setCustomMl] = useState('')
@@ -55,7 +57,7 @@ export default function Water() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title="পানি ট্র্যাকার" showBack />
+      <PageHeader title={t.water_title} showBack />
 
       <div className="px-4 pt-4 pb-8 flex flex-col items-center gap-5">
         {/* Progress ring */}
@@ -89,7 +91,7 @@ export default function Water() {
               onClick={() => handleAdd(ml)}
               className="flex-1 bg-primary text-white font-hind font-semibold text-sm py-3 rounded-xl tap"
             >
-              {ml === 1000 ? '১ লি' : bengaliNumber(ml)}
+              {ml === 1000 ? t.liter_1 : bengaliNumber(ml)}
             </button>
           ))}
         </div>
@@ -102,7 +104,7 @@ export default function Water() {
             step="50"
             value={customMl}
             onChange={(e) => setCustomMl(e.target.value)}
-            placeholder="পরিমাণ (ml)"
+            placeholder={t.custom_placeholder}
             className="flex-1 bg-surface border border-line rounded-xl px-4 py-3 font-number text-sm text-[#2C3320] outline-none focus:border-primary"
           />
           <button
@@ -111,15 +113,15 @@ export default function Water() {
             className="bg-primary text-white font-hind font-semibold px-5 py-3 rounded-xl tap flex items-center gap-1 disabled:opacity-40"
           >
             <Plus size={18} />
-            যোগ
+            {t.water_add_btn}
           </button>
         </div>
 
         {/* Today's log */}
         <div className="w-full max-w-sm">
-          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-2">আজকের লগ</h3>
+          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-2">{t.today_log}</h3>
           {entries.length === 0 ? (
-            <p className="font-hind text-sm text-muted text-center py-4">আজকে এখনো পানি পান করেননি</p>
+            <p className="font-hind text-sm text-muted text-center py-4">{t.no_water_today}</p>
           ) : (
             <div className="flex flex-col gap-1.5">
               {entries.map((e) => (

@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Save } from 'lucide-react'
 import PageHeader from '../components/layout/PageHeader'
+import { useT } from '../hooks/useTranslation'
 import useUserStore from '../store/userStore'
 
 export default function ProfileEdit() {
   const nav = useNavigate()
+  const { t } = useT()
   const profile = useUserStore((s) => s.profile)
   const saveProfile = useUserStore((s) => s.saveProfile)
 
@@ -32,10 +34,10 @@ export default function ProfileEdit() {
   const set = (k, v) => setForm((p) => ({ ...p, [k]: v }))
 
   const fields = [
-    { key: 'name_bn', label: 'নাম', type: 'text' },
-    { key: 'age', label: 'বয়স', type: 'number' },
-    { key: 'height_cm', label: 'উচ্চতা (সেমি)', type: 'number' },
-    { key: 'current_weight_kg', label: 'বর্তমান ওজন (কেজি)', type: 'number' },
+    { key: 'name_bn', label: t.name_bn_label, type: 'text' },
+    { key: 'age', label: t.age_label, type: 'number' },
+    { key: 'height_cm', label: t.height_label, type: 'number' },
+    { key: 'current_weight_kg', label: t.current_weight_label, type: 'number' },
   ]
 
   const handleSave = async () => {
@@ -51,7 +53,7 @@ export default function ProfileEdit() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title="প্রোফাইল" showBack />
+      <PageHeader title={t.profile_title} showBack />
 
       <div className="px-4 pt-4 pb-8 flex flex-col gap-4">
         {fields.map((f) => (
@@ -68,7 +70,7 @@ export default function ProfileEdit() {
 
         {/* Gender */}
         <div>
-          <label className="font-hind text-sm font-medium text-muted mb-1 block">লিঙ্গ</label>
+          <label className="font-hind text-sm font-medium text-muted mb-1 block">{t.gender_label}</label>
           <div className="flex gap-2">
             {['male', 'female'].map((g) => (
               <button
@@ -80,7 +82,7 @@ export default function ProfileEdit() {
                     : 'bg-surface border border-line text-[#2C3320]'
                 }`}
               >
-                {g === 'male' ? 'পুরুষ' : 'মহিলা'}
+                {g === 'male' ? t.male_label : t.female_label}
               </button>
             ))}
           </div>
@@ -91,7 +93,7 @@ export default function ProfileEdit() {
           className="w-full bg-primary text-white font-hind font-semibold text-lg py-4 rounded-xl tap flex items-center justify-center gap-2 mt-4"
         >
           <Save size={20} />
-          সেভ করুন
+          {t.save_profile_btn}
         </button>
       </div>
     </div>

@@ -1,17 +1,19 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Home, Timer, UtensilsCrossed, BarChart3, BookOpen } from 'lucide-react'
-
-const tabs = [
-  { label: 'হোম', icon: Home, path: '/' },
-  { label: 'ফাস্টিং', icon: Timer, path: '/fast' },
-  { label: 'খাবার', icon: UtensilsCrossed, path: '/food' },
-  { label: 'স্ট্যাটস', icon: BarChart3, path: '/stats' },
-  { label: 'শিখুন', icon: BookOpen, path: '/learn' },
-]
+import { useT } from '../../hooks/useTranslation'
 
 export default function BottomTabBar() {
   const location = useLocation()
   const navigate = useNavigate()
+  const { t } = useT()
+
+  const tabs = [
+    { label: t.home, icon: Home, path: '/' },
+    { label: t.fasting, icon: Timer, path: '/fast' },
+    { label: t.food, icon: UtensilsCrossed, path: '/food' },
+    { label: t.stats, icon: BarChart3, path: '/stats' },
+    { label: t.learn, icon: BookOpen, path: '/learn' },
+  ]
 
   return (
     <nav

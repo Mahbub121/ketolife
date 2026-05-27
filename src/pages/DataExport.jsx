@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { Download, FileText } from 'lucide-react'
 import PageHeader from '../components/layout/PageHeader'
+import { useT } from '../hooks/useTranslation'
 import db from '../db/dexie'
 
 export default function DataExport() {
   const [loading, setLoading] = useState(false)
+  const { t } = useT()
 
   const handleExport = async () => {
     setLoading(true)
@@ -37,13 +39,13 @@ export default function DataExport() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title="ডাটা এক্সপোর্ট" showBack />
+      <PageHeader title={t.export_title} showBack />
 
       <div className="px-4 pt-4 pb-8 flex flex-col gap-4">
         <div className="bg-surface rounded-xl border border-line p-6 flex flex-col items-center gap-3">
           <FileText size={40} className="text-line" />
           <p className="font-hind text-sm text-muted text-center">
-            আপনার সব ডাটা JSON ফরম্যাটে ডাউনলোড করুন
+            {t.export_desc}
           </p>
           <button
             onClick={handleExport}
@@ -51,13 +53,13 @@ export default function DataExport() {
             className={`bg-primary text-white font-hind font-semibold px-6 py-3 rounded-xl tap flex items-center gap-2 ${loading ? 'opacity-60 cursor-not-allowed' : ''}`}
           >
             <Download size={18} />
-            {loading ? 'এক্সপোর্ট হচ্ছে...' : 'ডাটা এক্সপোর্ট করুন'}
+            {loading ? t.exporting_text : t.export_btn}
           </button>
         </div>
 
         <div className="bg-highlight-tint rounded-xl p-4">
           <p className="font-hind text-xs text-highlight">
-            ডাটা শুধু আপনার ডিভাইসে রাখা হয়। কোনো সার্ভারে আপলোড করা হয় না।
+            {t.privacy_note}
           </p>
         </div>
       </div>

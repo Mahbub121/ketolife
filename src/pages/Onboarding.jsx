@@ -2,34 +2,36 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
 import useUserStore from '../store/userStore'
-
-const slides = [
-  {
-    emoji: '🥑',
-    title: 'কেটো ও ফাস্টিং শুরু করুন',
-    desc: 'কেটোলাইফ বিডি আপনাকে সাহায্য করবে কেটোজেনিক ডায়েট ও ইন্টারমিটেন্ট ফাস্টিং ট্র্যাক করতে।',
-  },
-  {
-    emoji: '⏳',
-    title: 'ট্র্যাক করুন আপনার ফাস্টিং',
-    desc: 'ফাস্টিং টাইমার, প্রোটোকল সিলেক্টর এবং অটোফেজি স্টেজ — সব কিছু এক জায়গায়।',
-  },
-  {
-    emoji: '🍗',
-    title: 'দেশীয় খাবারের ডাটাবেস',
-    desc: 'বাংলাদেশি রেসিপির পুষ্টিগুণ — কেটো ফ্রেন্ডলি খাবার খুঁজুন এবং ট্র্যাক করুন।',
-  },
-  {
-    emoji: '📊',
-    title: 'সম্পূর্ণ স্বাস্থ্য ট্র্যাকিং',
-    desc: 'কিটোন, ওয়াটার, ওয়েট — সবকিছুর গ্রাফ এবং পরিসংখ্যান।',
-  },
-]
+import { useT } from '../hooks/useTranslation'
 
 export default function Onboarding() {
   const [step, setStep] = useState(0)
   const nav = useNavigate()
   const saveProfile = useUserStore((s) => s.saveProfile)
+  const { t } = useT()
+
+  const slides = [
+    {
+      emoji: '🥑',
+      title: t.slide_1_title,
+      desc: t.slide_1_desc,
+    },
+    {
+      emoji: '⏳',
+      title: t.slide_2_title,
+      desc: t.slide_2_desc,
+    },
+    {
+      emoji: '🍗',
+      title: t.slide_3_title,
+      desc: t.slide_3_desc,
+    },
+    {
+      emoji: '📊',
+      title: t.slide_4_title,
+      desc: t.slide_4_desc,
+    },
+  ]
   const current = slides[step]
   const isLast = step === slides.length - 1
 
@@ -70,7 +72,7 @@ export default function Onboarding() {
           onClick={next}
           className="w-full bg-primary text-white font-hind font-semibold text-lg py-4 rounded-xl tap flex items-center justify-center gap-2"
         >
-          {isLast ? 'শুরু করুন' : 'পরবর্তী'}
+          {isLast ? t.start_app : t.next_step}
           {!isLast && <ChevronRight size={20} />}
         </button>
       </div>

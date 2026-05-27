@@ -3,15 +3,16 @@ import { Activity, Plus } from 'lucide-react'
 import PageHeader from '../components/layout/PageHeader'
 import { addKetoneReading, getLast7Ketone } from '../db/dexie'
 import bengaliNumber from '../utils/bengaliNumber'
+import { useT } from '../hooks/useTranslation'
 
 const KetoneChart = lazy(() => import('../components/charts/KetoneChart'))
 
-function getLevelBadge(mmol) {
+function getLevelBadge(mmol, t) {
   if (mmol == null) return null
-  if (mmol < 0.5) return { label: 'বিটা-অক্সিডেশন', cls: 'bg-[#E8E2D0] text-muted' }
-  if (mmol < 1.5) return { label: 'মৃদু কিটোসিস', cls: 'bg-accent-tint text-accent' }
-  if (mmol < 3.0) return { label: 'পরিমিত কিটোসিস', cls: 'bg-primary-tint text-primary' }
-  return { label: 'গভীর কিটোসিস', cls: 'bg-purple-100 text-purple-700' }
+  if (mmol < 0.5) return { label: t.badge_beta_oxidation, cls: 'bg-[#E8E2D0] text-muted' }
+  if (mmol < 1.5) return { label: t.badge_mild_ketosis, cls: 'bg-accent-tint text-accent' }
+  if (mmol < 3.0) return { label: t.badge_moderate_ketosis, cls: 'bg-primary-tint text-primary' }
+  return { label: t.badge_deep_ketosis, cls: 'bg-purple-100 text-purple-700' }
 }
 
 function formatShortDate(iso) {
@@ -21,6 +22,7 @@ function formatShortDate(iso) {
 }
 
 export default function Ketone() {
+  const { t } = useT()
   const [readings, setReadings] = useState([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(true)
@@ -40,7 +42,7 @@ export default function Ketone() {
   }, [])
 
   const latestMmol = readings.length > 0 ? readings[readings.length - 1].mmol : null
-  const badge = getLevelBadge(latestMmol)
+  const badge = getLevelBadge(latestMmol, t)
 
   const chartData = readings.map((r) => ({
     date: formatShortDate(r.date),
@@ -57,7 +59,7 @@ export default function Ketone() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title="কিটোন ট্র্যাকার" showBack />
+      <PageHeader title={t.ketone_title} showBack />
 
       <div className="px-4 pt-4 pb-8 flex flex-col gap-5">
         {/* Ketosis level badge */}
@@ -71,7 +73,7 @@ export default function Ketone() {
 
         {/* Input */}
         <div className="bg-surface rounded-xl border border-line p-4">
-          <label className="font-hind text-sm font-medium text-muted mb-2 block">নতুন রিডিং (mmol/L)</label>
+          <label className="font-hind text-sm font-medium text-muted mb-2 block">{t.new_reading_label}</label>
           <div className="flex gap-2">
             <input
               type="number"
@@ -80,7 +82,7 @@ export default function Ketone() {
               max="8"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="যেমন: ১.৫"
+              placeholder={t.reading_placeholder}
               className="flex-1 bg-bg border border-line rounded-xl px-4 py-3 font-number text-sm text-[#2C3320] outline-none focus:border-primary"
             />
             <button
@@ -89,21 +91,21 @@ export default function Ketone() {
               className="bg-primary text-white font-hind font-semibold px-5 py-3 rounded-xl tap flex items-center gap-1 disabled:opacity-40"
             >
               <Plus size={18} />
-              রিডিং
+              {t.submit_reading}
             </button>
           </div>
         </div>
 
         {/* Chart */}
         <div className="bg-surface rounded-xl border border-line p-4">
-          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">শেষ ৭ রিডিং</h3>
+          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">{t.last_7_readings}</h3>
           {readings.length === 0 ? (
             <div className="flex flex-col items-center py-8">
               <Activity size={32} className="text-line mb-2" />
-              <p className="font-hind text-sm text-muted">কোনো রিডিং নেই</p>
+              <p className="font-hind text-sm text-muted">{t.no_readings}</p>
             </div>
           ) : (
-            <Suspense fallback={<div className="font-hind text-sm text-muted text-center py-8">লোড হচ্ছে...</div>}>
+            <Suspense fallback={<div className="font-hind text-sm text-muted text-center py-8">{t.loading}</div>}>
               <KetoneChart data={chartData} />
             </Suspense>
           )}
@@ -111,9 +113,9 @@ export default function Ketone() {
 
         {/* Info */}
         <div className="bg-primary-tint rounded-xl p-4">
-          <p className="font-hind text-sm text-primary font-medium mb-1">অপটিমাল কিটোন লেভেল</p>
+          <p className="font-hind text-sm text-primary font-medium mb-1">{t.optimal_level_title}</p>
           <p className="font-hind text-xs text-muted">
-            পুষ্টিগত কিটোসিস: ০.৫ — ৩.০ mmol/L। ৩.০ এর উপরে থেরাপিউটিক রেঞ্জ।
+            {t.optimal_level_desc}
           </p>
         </div>
       </div>

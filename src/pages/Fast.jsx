@@ -7,9 +7,11 @@ import BigStageRing from '../components/timer/BigStageRing'
 import ProtocolSelector from '../components/timer/ProtocolSelector'
 import PageHeader from '../components/layout/PageHeader'
 import bengaliNumber from '../utils/bengaliNumber'
+import { useT } from '../hooks/useTranslation'
 
 export default function Fast() {
   const nav = useNavigate()
+  const { t } = useT()
   const { activeFast, startFast, endFast, pauseFast, resumeFast } = useFastStore()
   const timer = useFastingTimer()
   const [protocol, setProtocol] = useState('১৬:৮')
@@ -36,14 +38,14 @@ export default function Fast() {
   return (
     <div className="min-h-screen bg-bg">
       <PageHeader
-        title="ফাস্টিং"
+        title={t.fasting_page_title}
         rightAction={
           <button
             onClick={() => nav('/fast/history')}
             className="flex items-center gap-1 tap"
           >
             <History size={18} className="text-primary" />
-            <span className="font-hind text-sm text-primary">হিস্ট্রি</span>
+            <span className="font-hind text-sm text-primary">{t.history_btn}</span>
           </button>
         }
       />
@@ -61,7 +63,7 @@ export default function Fast() {
         {/* Next stage hint */}
         {timer.isFasting && timer.nextStage && (
           <p className="font-hind text-sm text-muted text-center">
-            লক্ষ্য: {timer.nextStage.bn} — {bengaliNumber(Math.round(timer.nextStage.h))} ঘন্টা
+            {t.target_prefix} {timer.nextStage.bn} — {bengaliNumber(Math.round(timer.nextStage.h))} {t.hours_unit}
           </p>
         )}
 
@@ -69,7 +71,7 @@ export default function Fast() {
         {timer.isFasting && (
           <div className="bg-surface rounded-xl border border-line px-5 py-3">
             <p className="font-hind text-sm text-muted text-center">
-              বাকি: <span className="font-number font-semibold text-[#2C3320]">{timer.formattedRemaining}</span>
+              {t.remaining_prefix} <span className="font-number font-semibold text-[#2C3320]">{timer.formattedRemaining}</span>
             </p>
           </div>
         )}
@@ -78,7 +80,7 @@ export default function Fast() {
         {!timer.isFasting && (
           <div className="w-full max-w-sm">
             <label className="font-hind text-sm font-medium text-muted mb-1.5 block">
-              ফাস্টিং প্রোটোকল
+              {t.protocol_label}
             </label>
             <ProtocolSelector selected={protocol} onSelect={setProtocol} />
           </div>
@@ -92,7 +94,7 @@ export default function Fast() {
               className="bg-primary text-white font-hind font-semibold text-lg px-10 py-4 rounded-xl tap flex items-center gap-2"
             >
               <Play size={20} fill="white" />
-              শুরু করুন
+              {t.start_btn}
             </button>
           ) : (
             <>
@@ -109,14 +111,14 @@ export default function Fast() {
                 ) : (
                   <Pause size={20} />
                 )}
-                {activeFast?.status === 'paused' ? 'রিজিউম' : 'পজ'}
+                {activeFast?.status === 'paused' ? t.resume_btn : t.pause_btn}
               </button>
               <button
                 onClick={handleEnd}
                 className="bg-highlight-tint text-highlight font-hind font-semibold px-6 py-4 rounded-xl tap flex items-center gap-2"
               >
                 <Square size={18} fill="currentColor" />
-                শেষ
+                {t.end_btn}
               </button>
             </>
           )}
@@ -128,7 +130,7 @@ export default function Fast() {
             onClick={() => nav('/fast/history')}
             className="w-full max-w-sm flex items-center justify-between bg-surface rounded-xl border border-line px-4 py-3 tap mt-4"
           >
-            <span className="font-hind text-sm text-[#2C3320]">পূর্বের ফাস্টিং</span>
+            <span className="font-hind text-sm text-[#2C3320]">{t.previous_fasts}</span>
             <ChevronRight size={18} className="text-muted" />
           </button>
         )}

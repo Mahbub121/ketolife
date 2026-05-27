@@ -7,6 +7,7 @@ import MacroBar from '../components/dashboard/MacroBar'
 import { getLast30Weight } from '../db/dexie'
 import db from '../db/dexie'
 import bengaliNumber from '../utils/bengaliNumber'
+import { useT } from '../hooks/useTranslation'
 
 const WeightChart = lazy(() => import('../components/charts/WeightChart'))
 const FastingChart = lazy(() => import('../components/charts/FastingChart'))
@@ -29,55 +30,56 @@ function getWeekAgo() {
   return new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10)
 }
 
-const badgeDefs = [
-  {
-    id: 'first-fast',
-    icon: Clock,
-    label: 'প্রথম ফাস্ট',
-    desc: 'একটি ফাস্ট সম্পন্ন করুন',
-    check: (h) => h.length >= 1,
-  },
-  {
-    id: 'week-streak',
-    icon: Award,
-    label: 'সপ্তাহের যোদ্ধা',
-    desc: 'টানা ৭ দিন ফাস্ট করুন',
-    check: (h, streak) => streak >= 7,
-  },
-  {
-    id: 'keto-master',
-    icon: Flame,
-    label: 'কিটো মাস্টার',
-    desc: '১০টি ফাস্ট সম্পন্ন করুন',
-    check: (h) => h.length >= 10,
-  },
-  {
-    id: 'water-tracker',
-    icon: BarChart3,
-    label: 'পানি সচেতন',
-    desc: 'পানি ট্র্যাকিং শুরু করুন',
-    check: (h, s, wl) => (wl || 0) > 0,
-  },
-  {
-    id: 'weight-aware',
-    icon: Scale,
-    label: 'ওজন সচেতন',
-    desc: 'ওজন ট্র্যাকিং শুরু করুন',
-    check: (h, s, wl, wtl) => (wtl || 0) > 0,
-  },
-  {
-    id: 'food-collector',
-    icon: Target,
-    label: 'খাদ্য সংগ্রাহক',
-    desc: '৫টি খাবার লগ করুন',
-    check: (h, s, wl, wtl, fl) => (fl || 0) >= 5,
-  },
-]
-
 export default function Stats() {
+  const { t } = useT()
   const history = useFastStore((s) => s.history)
   const loadHistory = useFastStore((s) => s.loadHistory)
   const { totals, targets } = useDailyStats()
+
+  const badgeDefs = [
+    {
+      id: 'first-fast',
+      icon: Clock,
+      label: t.badge_first_fast,
+      desc: t.badge_desc_first_fast,
+      check: (h) => h.length >= 1,
+    },
+    {
+      id: 'week-streak',
+      icon: Award,
+      label: t.badge_week_warrior,
+      desc: t.badge_desc_week_warrior,
+      check: (h, streak) => streak >= 7,
+    },
+    {
+      id: 'keto-master',
+      icon: Flame,
+      label: t.badge_keto_master,
+      desc: t.badge_desc_keto_master,
+      check: (h) => h.length >= 10,
+    },
+    {
+      id: 'water-tracker',
+      icon: BarChart3,
+      label: t.badge_water_aware,
+      desc: t.badge_desc_water_aware,
+      check: (h, s, wl) => (wl || 0) > 0,
+    },
+    {
+      id: 'weight-aware',
+      icon: Scale,
+      label: t.badge_weight_aware,
+      desc: t.badge_desc_weight_aware,
+      check: (h, s, wl, wtl) => (wtl || 0) > 0,
+    },
+    {
+      id: 'food-collector',
+      icon: Target,
+      label: t.badge_food_collector,
+      desc: t.badge_desc_food_collector,
+      check: (h, s, wl, wtl, fl) => (fl || 0) >= 5,
+    },
+  ]
 
   const [weightEntries, setWeightEntries] = useState([])
   const [weeklyFastData, setWeeklyFastData] = useState([])
@@ -151,7 +153,7 @@ export default function Stats() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title="স্ট্যাটস" />
+      <PageHeader title={t.stats_title} />
 
       <div className="px-4 pt-4 pb-8 flex flex-col gap-4">
         {/* Summary cards */}
@@ -159,30 +161,30 @@ export default function Stats() {
           <div className="bg-primary-tint rounded-xl p-3 flex flex-col items-center gap-1">
             <Clock size={18} className="text-primary" />
             <p className="font-number font-bold text-sm text-[#2C3320]">{bengaliNumber(Math.round(totalFastHours))}h</p>
-            <p className="font-hind text-[10px] text-muted text-center leading-tight">মোট ফাস্টিং</p>
+            <p className="font-hind text-[10px] text-muted text-center leading-tight">{t.total_fasting}</p>
           </div>
           <div className="bg-accent-tint rounded-xl p-3 flex flex-col items-center gap-1">
             <Target size={18} className="text-accent" />
             <p className="font-number font-bold text-sm text-[#2C3320]">{bengaliNumber(totalFastCount)}টি</p>
-            <p className="font-hind text-[10px] text-muted text-center leading-tight">ফাস্ট সম্পন্ন</p>
+            <p className="font-hind text-[10px] text-muted text-center leading-tight">{t.fasts_completed}</p>
           </div>
           <div className="bg-green-50 rounded-xl p-3 flex flex-col items-center gap-1">
             <Flame size={18} className="text-success" />
             <p className="font-number font-bold text-sm text-[#2C3320]">{bengaliNumber(weeklyCarbs)}g</p>
-            <p className="font-hind text-[10px] text-muted text-center leading-tight">গড় কার্ব</p>
+            <p className="font-hind text-[10px] text-muted text-center leading-tight">{t.avg_carbs}</p>
           </div>
         </div>
 
         {/* Weekly fasting chart */}
         <div className="bg-surface rounded-xl border border-line p-4">
-          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">সাপ্তাহিক ফাস্টিং</h3>
+          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">{t.weekly_fasting}</h3>
           {history.length === 0 ? (
             <div className="flex flex-col items-center py-8">
               <BarChart3 size={32} className="text-line mb-2" />
-              <p className="font-hind text-sm text-muted">কোনো ডাটা নেই</p>
+              <p className="font-hind text-sm text-muted">{t.no_data}</p>
             </div>
           ) : (
-            <Suspense fallback={<div className="font-hind text-sm text-muted text-center py-8">লোড হচ্ছে...</div>}>
+            <Suspense fallback={<div className="font-hind text-sm text-muted text-center py-8">{t.loading}</div>}>
               <FastingChart data={weeklyFastData} />
             </Suspense>
           )}
@@ -190,14 +192,14 @@ export default function Stats() {
 
         {/* Weight trend */}
         <div className="bg-surface rounded-xl border border-line p-4">
-          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">ওয়েট ট্রেন্ড</h3>
+          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">{t.weight_trend}</h3>
           {weightEntries.length === 0 ? (
             <div className="flex flex-col items-center py-8">
               <Scale size={32} className="text-line mb-2" />
-              <p className="font-hind text-sm text-muted">কোনো ডাটা নেই</p>
+              <p className="font-hind text-sm text-muted">{t.no_data}</p>
             </div>
           ) : (
-            <Suspense fallback={<div className="font-hind text-sm text-muted text-center py-8">লোড হচ্ছে...</div>}>
+            <Suspense fallback={<div className="font-hind text-sm text-muted text-center py-8">{t.loading}</div>}>
               <WeightChart data={weightChartData} />
             </Suspense>
           )}
@@ -205,19 +207,19 @@ export default function Stats() {
 
         {/* Macro summary */}
         <div className="bg-surface rounded-xl border border-line p-4">
-          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">গড় ম্যাক্রো (সাপ্তাহিক)</h3>
+          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">{t.avg_macro_weekly}</h3>
           <MacroBar
             value={weeklyCarbs}
             target={targets.carbs}
             color={weeklyCarbs > targets.carbs ? 'var(--warning)' : 'var(--highlight)'}
-            label="নেট কার্ব"
+            label={t.net_carbs}
           />
-          <p className="font-hind text-[11px] text-muted mt-2">গড় দৈনিক কার্ব গ্রহণ (শেষ ৭ দিন)</p>
+          <p className="font-hind text-[11px] text-muted mt-2">{t.avg_daily_carbs}</p>
         </div>
 
         {/* Achievements */}
         <div className="bg-surface rounded-xl border border-line p-4">
-          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">অর্জন</h3>
+          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">{t.achievements}</h3>
           <div className="grid grid-cols-3 gap-3">
             {badgeDefs.map((b) => {
               const earned = b.check(history, streak, waterEntryCount, weightEntryCount, foodEntryCount)

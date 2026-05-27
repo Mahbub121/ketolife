@@ -2,19 +2,21 @@ import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Save } from 'lucide-react'
 import PageHeader from '../components/layout/PageHeader'
+import { useT } from '../hooks/useTranslation'
 import db from '../db/dexie'
-
-const categories = ['সবজি', 'মাংস', 'মাছ', 'ডিম/দুগ্ধ', 'বাদাম/তেল']
 
 export default function FoodCustom() {
   const nav = useNavigate()
   const [searchParams] = useSearchParams()
   const meal = searchParams.get('meal') || 'সকাল'
+  const { t } = useT()
+
+  const categories = [t.cat_veg, t.cat_meat, t.cat_fish, t.cat_dairy, t.cat_nuts]
 
   const [form, setForm] = useState({
     name_bn: '',
     name_en: '',
-    category: 'সবজি',
+    category: t.cat_veg,
     carbs_g: '',
     fat_g: '',
     protein_g: '',
@@ -48,21 +50,21 @@ export default function FoodCustom() {
   }
 
   const fields = [
-    { key: 'name_bn', label: 'খাবারের নাম', type: 'text', required: true },
-    { key: 'name_en', label: 'ইংরেজি নাম', type: 'text', required: false },
-    { key: 'carbs_g', label: 'কার্বস (g)', type: 'number' },
-    { key: 'fat_g', label: 'ফ্যাট (g)', type: 'number' },
-    { key: 'protein_g', label: 'প্রোটিন (g)', type: 'number' },
-    { key: 'kcal', label: 'ক্যালোরি', type: 'number' },
+    { key: 'name_bn', label: t.name_bn_label, type: 'text', required: true },
+    { key: 'name_en', label: t.name_en_label, type: 'text', required: false },
+    { key: 'carbs_g', label: t.carbs_label, type: 'number' },
+    { key: 'fat_g', label: t.fat_label, type: 'number' },
+    { key: 'protein_g', label: t.protein_label, type: 'number' },
+    { key: 'kcal', label: t.kcal_label, type: 'number' },
   ]
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title="কাস্টম খাবার" showBack />
+      <PageHeader title={t.custom_title} showBack />
 
       <div className="px-4 pt-4 pb-8 flex flex-col gap-4">
         <p className="font-hind text-xs text-muted mb-1">
-          খাবারটি যুক্ত হবে: <span className="font-medium text-[#2C3320]">{meal}</span> এর জন্য
+          {t.food_will_add} <span className="font-medium text-[#2C3320]">{meal}</span> {t.for_meal}
         </p>
 
         {fields.map((f) => (
@@ -81,7 +83,7 @@ export default function FoodCustom() {
         ))}
 
         <div>
-          <label className="font-hind text-sm font-medium text-muted mb-1 block">ধরন</label>
+          <label className="font-hind text-sm font-medium text-muted mb-1 block">{t.category_label}</label>
           <select
             value={form.category}
             onChange={(e) => set('category', e.target.value)}
@@ -99,7 +101,7 @@ export default function FoodCustom() {
           className="w-full bg-primary text-white font-hind font-semibold text-lg py-4 rounded-xl tap flex items-center justify-center gap-2 mt-2 disabled:opacity-40"
         >
           <Save size={20} />
-          {saving ? 'সেভ হচ্ছে...' : 'সংরক্ষণ করুন'}
+          {saving ? t.saving_text : t.save_food_btn}
         </button>
       </div>
     </div>

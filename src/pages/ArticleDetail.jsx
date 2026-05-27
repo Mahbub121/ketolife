@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { BookOpen, CheckCircle2 } from 'lucide-react'
 import PageHeader from '../components/layout/PageHeader'
 import db from '../db/dexie'
+import { useT } from '../hooks/useTranslation'
 
 const FALLBACK = {
   'keto-intro': {
@@ -24,6 +25,7 @@ const FALLBACK = {
 }
 
 export default function ArticleDetail() {
+  const { t } = useT()
   const { id } = useParams()
   const [article, setArticle] = useState(null)
   const [isRead, setIsRead] = useState(false)
@@ -63,11 +65,11 @@ export default function ArticleDetail() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title={article?.title || 'আর্টিকেল'} showBack />
+      <PageHeader title={article?.title || t.article_default_title} showBack />
 
       <div className="px-4 pt-4 pb-8">
         {loading ? (
-          <p className="font-hind text-sm text-muted text-center py-8">লোড হচ্ছে...</p>
+          <p className="font-hind text-sm text-muted text-center py-8">{t.loading}</p>
         ) : article ? (
           <div className="flex flex-col gap-4">
             <div className="bg-surface rounded-xl border border-line p-5">
@@ -85,20 +87,20 @@ export default function ArticleDetail() {
             {isRead ? (
               <div className="flex items-center justify-center gap-2 bg-primary-tint rounded-xl py-3">
                 <CheckCircle2 size={18} className="text-primary" />
-                <span className="font-hind text-sm font-medium text-primary">পড়া হয়েছে</span>
+                <span className="font-hind text-sm font-medium text-primary">{t.read_status}</span>
               </div>
             ) : (
               <button
                 onClick={markAsRead}
                 className="w-full bg-primary text-white font-hind font-semibold text-lg py-4 rounded-xl tap"
               >
-                পড়া শেষ
+                {t.mark_read_btn}
               </button>
             )}
           </div>
         ) : (
           <div className="flex flex-col items-center py-12">
-            <p className="font-hind text-base text-muted">আর্টিকেল পাওয়া যায়নি</p>
+            <p className="font-hind text-base text-muted">{t.article_not_found}</p>
           </div>
         )}
       </div>

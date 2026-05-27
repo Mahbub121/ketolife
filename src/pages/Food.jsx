@@ -4,6 +4,7 @@ import { Plus, ChevronDown, X, UtensilsCrossed } from 'lucide-react'
 import PageHeader from '../components/layout/PageHeader'
 import MacroBar from '../components/dashboard/MacroBar'
 import { getTodayFoodEntries, deleteFoodEntry } from '../db/dexie'
+import { useT } from '../hooks/useTranslation'
 import useDailyStats from '../hooks/useDailyStats'
 import bengaliNumber from '../utils/bengaliNumber'
 
@@ -11,6 +12,7 @@ const meals = ['সকাল', 'দুপুর', 'রাত']
 
 export default function Food() {
   const nav = useNavigate()
+  const { t } = useT()
   const [entries, setEntries] = useState([])
   const [expanded, setExpanded] = useState(new Set())
   const [showFabMenu, setShowFabMenu] = useState(false)
@@ -44,13 +46,13 @@ export default function Food() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title="খাবার ট্র্যাকার" />
+      <PageHeader title={t.food_tracker_title} />
 
       <div className="px-4 pt-4 pb-24 flex flex-col gap-3">
         {/* Total summary */}
         <div className="bg-surface rounded-xl border border-line p-3 text-center">
           <p className="font-hind text-sm text-muted">
-            মোট {bengaliNumber(entries.length)}টি আইটেম · {bengaliNumber(totals.kcal)} / {bengaliNumber(targets.kcal)} ক্যা
+            {t.total_label} {bengaliNumber(entries.length)}{t.items_count} · {bengaliNumber(totals.kcal)} / {bengaliNumber(targets.kcal)} {t.kcal_short}
           </p>
         </div>
 
@@ -83,7 +85,7 @@ export default function Food() {
                 <div className="border-t border-line">
                   {mealEntries.length === 0 ? (
                     <p className="font-hind text-sm text-muted text-center py-4">
-                      {meal} এর খাবার যোগ করা হয়নি
+                      {meal} {t.no_food_for}
                     </p>
                   ) : (
                     mealEntries.map((e) => (
@@ -113,17 +115,17 @@ export default function Food() {
 
         {/* Macro total bar at bottom */}
         <div className="bg-surface rounded-xl border border-line p-4 mt-1">
-          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">আজকের ম্যাক্রো</h3>
+          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">{t.todays_macros}</h3>
           <MacroBar
             value={totals.carbs}
             target={targets.carbs}
             color={totals.carbs > targets.carbs ? 'var(--warning)' : 'var(--highlight)'}
-            label="নেট কার্ব"
+            label={t.net_carbs}
             big
           />
           <div className="flex gap-3 mt-3">
-            <MacroBar value={totals.fat} target={targets.fat} color="var(--accent)" label="ফ্যাট" />
-            <MacroBar value={totals.protein} target={targets.protein} color="var(--primary)" label="প্রোটিন" />
+            <MacroBar value={totals.fat} target={targets.fat} color="var(--accent)" label={t.fat} />
+            <MacroBar value={totals.protein} target={targets.protein} color="var(--primary)" label={t.protein} />
           </div>
         </div>
       </div>
@@ -144,7 +146,7 @@ export default function Food() {
                 }}
                 className="w-full flex items-center gap-2 px-4 py-3 tap border-b border-line last:border-b-0 font-hind text-sm text-[#2C3320]"
               >
-                {m} এর জন্য
+                {m} {t.add_for}
               </button>
             ))}
           </div>

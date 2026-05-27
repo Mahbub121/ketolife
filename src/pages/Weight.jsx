@@ -4,6 +4,7 @@ import PageHeader from '../components/layout/PageHeader'
 import useUserStore from '../store/userStore'
 import { addWeightEntry, getLast30Weight } from '../db/dexie'
 import bengaliNumber from '../utils/bengaliNumber'
+import { useT } from '../hooks/useTranslation'
 
 const WeightChart = lazy(() => import('../components/charts/WeightChart'))
 
@@ -19,15 +20,16 @@ function calcBMI(weightKg, heightCm) {
   return weightKg / ((heightCm / 100) ** 2)
 }
 
-function bmiCategory(bmi) {
+function bmiCategory(bmi, t) {
   if (bmi == null) return null
-  if (bmi < 18.5) return { label: 'কম ওজন', color: 'text-accent' }
-  if (bmi < 25) return { label: 'স্বাভাবিক', color: 'text-primary' }
-  if (bmi < 30) return { label: 'বেশি ওজন', color: 'text-highlight' }
-  return { label: 'স্থূল', color: 'text-highlight font-bold' }
+  if (bmi < 18.5) return { label: t.bmi_underweight, color: 'text-accent' }
+  if (bmi < 25) return { label: t.bmi_normal, color: 'text-primary' }
+  if (bmi < 30) return { label: t.bmi_overweight, color: 'text-highlight' }
+  return { label: t.bmi_obese, color: 'text-highlight font-bold' }
 }
 
 export default function Weight() {
+  const { t } = useT()
   const profile = useUserStore((s) => s.profile)
   const [entries, setEntries] = useState([])
   const [input, setInput] = useState('')
@@ -52,7 +54,7 @@ export default function Weight() {
   const targetKg = profile?.targetWeight ? parseFloat(profile.targetWeight) : null
   const heightCm = profile?.height ? parseFloat(profile.height) : null
   const bmi = currentKg ? calcBMI(currentKg, heightCm) : null
-  const bmiCat = bmiCategory(bmi)
+  const bmiCat = bmiCategory(bmi, t)
   const delta = targetKg && currentKg ? targetKg - currentKg : null
 
   const chartData = entries.map((e) => ({
@@ -70,13 +72,13 @@ export default function Weight() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title="ওয়েট ট্র্যাকার" showBack />
+      <PageHeader title={t.weight_title} showBack />
 
       <div className="px-4 pt-4 pb-8 flex flex-col gap-4">
         {/* Current + Goal */}
         <div className="flex gap-3">
           <div className="flex-1 bg-surface rounded-xl border border-line p-4 text-center">
-            <p className="font-hind text-xs text-muted mb-1">বর্তমান</p>
+            <p className="font-hind text-xs text-muted mb-1">{t.current_label}</p>
             <p className="font-number font-bold text-3xl text-[#2C3320]">
               {currentKg ? bengaliNumber(currentKg) : '—'}
             </p>
@@ -84,7 +86,7 @@ export default function Weight() {
           </div>
 
           <div className="flex-1 bg-surface rounded-xl border border-line p-4 text-center">
-            <p className="font-hind text-xs text-muted mb-1">লক্ষ্য</p>
+            <p className="font-hind text-xs text-muted mb-1">{t.target_label}</p>
             <p className="font-number font-bold text-3xl text-primary">
               {targetKg ? bengaliNumber(targetKg) : '—'}
             </p>
@@ -100,7 +102,7 @@ export default function Weight() {
         {/* BMI */}
         {bmi !== null ? (
           <div className="bg-primary-tint rounded-xl px-4 py-3 flex items-center justify-between">
-            <span className="font-hind text-sm text-primary font-medium">বিএমআই</span>
+            <span className="font-hind text-sm text-primary font-medium">{t.bmi_label}</span>
             <span className={`font-number font-bold text-sm ${bmiCat?.color || 'text-primary'}`}>
               {bengaliNumber(Math.round(bmi * 10) / 10)} — {bmiCat?.label}
             </span>
@@ -108,14 +110,14 @@ export default function Weight() {
         ) : heightCm === null ? (
           <div className="bg-accent-tint rounded-xl px-4 py-3">
             <p className="font-hind text-xs text-accent">
-              বিএমআই দেখতে প্রোফাইলে উচ্চতা সেট করুন
+              {t.bmi_setup_hint}
             </p>
           </div>
         ) : null}
 
         {/* Input */}
         <div className="bg-surface rounded-xl border border-line p-4">
-          <label className="font-hind text-sm font-medium text-muted mb-2 block">নতুন ওজন (kg)</label>
+          <label className="font-hind text-sm font-medium text-muted mb-2 block">{t.new_weight_label}</label>
           <div className="flex gap-2">
             <input
               type="number"
@@ -124,7 +126,7 @@ export default function Weight() {
               max="300"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="যেমন: ৭২.৫"
+              placeholder={t.weight_placeholder}
               className="flex-1 bg-bg border border-line rounded-xl px-4 py-3 font-number text-sm text-[#2C3320] outline-none focus:border-primary"
             />
             <button
@@ -133,21 +135,21 @@ export default function Weight() {
               className="bg-primary text-white font-hind font-semibold px-5 py-3 rounded-xl tap flex items-center gap-1 disabled:opacity-40"
             >
               <Plus size={18} />
-              ওজন
+              {t.submit_weight}
             </button>
           </div>
         </div>
 
         {/* Chart */}
         <div className="bg-surface rounded-xl border border-line p-4">
-          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">শেষ ৩০ দিন</h3>
+          <h3 className="font-hind text-sm font-semibold text-[#2C3320] mb-3">{t.last_30_days}</h3>
           {entries.length === 0 ? (
             <div className="flex flex-col items-center py-8">
               <Scale size={32} className="text-line mb-2" />
-              <p className="font-hind text-sm text-muted">কোনো ওয়েট এন্ট্রি নেই</p>
+              <p className="font-hind text-sm text-muted">{t.no_weight_entries}</p>
             </div>
           ) : (
-            <Suspense fallback={<div className="font-hind text-sm text-muted text-center py-8">লোড হচ্ছে...</div>}>
+            <Suspense fallback={<div className="font-hind text-sm text-muted text-center py-8">{t.loading}</div>}>
               <WeightChart data={chartData} targetKg={targetKg} />
             </Suspense>
           )}
