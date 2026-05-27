@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #5B7F3F;
+  --primary-deep: #3F5A2C;
+  --primary-tint: #EAF0DD;
+  --bg: #FAF6EE;
+  --bg-deep: #F1ECDF;
+  --accent: #E8B647;
+  --accent-tint: #FBF1D6;
+  --highlight: #E97961;
+  --highlight-tint: #FBE3DC;
+  --warning: #E97961;
+  --surface: #FFFFFF;
+  --text: #2C3320;
+  --text-soft: #4F543F;
+  --muted: #7A7568;
+  --line: rgba(44, 51, 32, 0.08);
+  --line-strong: rgba(44, 51, 32, 0.16);
+  --success: #7BA05B;
+}
+
+body {
+  background-color: var(--bg);
+  font-family: 'Hind Siliguri', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-number {
+  font-family: 'Inter', sans-serif;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.tap {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 120ms ease;
+}
+
+.tap:active {
+  transform: scale(0.96);
+}
+
+/* Hide scrollbar for recent fasts / horizontal scrolls */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+#root {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  position: relative;
+  background-color: var(--surface);
+  box-shadow: 0 0 40px rgba(0,0,0,0.05);
+}
+
+@media (min-width: 480px) {
+  body {
+    background-color: #E8E2D4;
+  }
+}
