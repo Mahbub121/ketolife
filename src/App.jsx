@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import useUserStore from './store/userStore'
+import useSettingsStore from './store/settingsStore'
 import { seedFoods } from './db/seedFoods'
 import { seedArticles } from './db/seedArticles'
 import Onboarding from './pages/Onboarding'
@@ -24,12 +25,14 @@ import DataExport from './pages/DataExport'
 
 export default function App() {
   const loadProfile = useUserStore((s) => s.loadProfile)
+  const loadSettings = useSettingsStore((s) => s.loadSettings)
 
   useEffect(() => {
     loadProfile()
+    loadSettings()
     seedFoods()
     seedArticles()
-  }, [loadProfile])
+  }, [loadProfile, loadSettings])
 
   return (
     <BrowserRouter>
