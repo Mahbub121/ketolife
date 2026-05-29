@@ -14,7 +14,7 @@ export default function Fast() {
   const { t, lang } = useT()
   const { activeFast, startFast, endFast, pauseFast, resumeFast } = useFastStore()
   const timer = useFastingTimer()
-  const [protocol, setProtocol] = useState('১৬:৮')
+  const [protocol, setProtocol] = useState('16:8')
 
   useEffect(() => {
     if (activeFast?.protocol) {

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Home, Timer, UtensilsCrossed, BarChart3, BookOpen } from 'lucide-react'
+import { Home, Timer, UtensilsCrossed, BarChart3 } from 'lucide-react'
 import { useT } from '../../hooks/useTranslation'
 
 export default function BottomTabBar() {
@@ -12,7 +12,6 @@ export default function BottomTabBar() {
     { label: t.fasting, icon: Timer, path: '/fast' },
     { label: t.food, icon: UtensilsCrossed, path: '/food' },
     { label: t.stats, icon: BarChart3, path: '/stats' },
-    { label: t.learn, icon: BookOpen, path: '/learn' },
   ]
 
   return (

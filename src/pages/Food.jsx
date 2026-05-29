@@ -91,7 +91,7 @@ export default function Food() {
                 <div className="border-t border-line">
                   {mealEntries.length === 0 ? (
                     <p className="font-hind text-sm text-muted text-center py-4">
-                      {meal} {t.no_food_for}
+                      {mealLabels[meal]}
                     </p>
                   ) : (
                     mealEntries.map((e) => (
@@ -101,7 +101,7 @@ export default function Food() {
                       >
                         <div className="flex-1 min-w-0">
                           <p className="font-hind text-sm font-medium text-[#2C3320] truncate">
-                            {e.name_bn}
+                            {e.name_en || e.name_bn}
                           </p>
                           <p className="font-number text-xs text-muted">
                             {bengaliNumber(e.portion_g)}g · C:{bengaliNumber(Math.round(e.net_carbs_g))} F:{bengaliNumber(Math.round(e.fat_g))} P:{bengaliNumber(Math.round(e.protein_g))}

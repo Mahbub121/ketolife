@@ -12,7 +12,7 @@ import dailyTips from '../data/dailyTips'
 import Ring from '../components/timer/Ring'
 import MacroBar from '../components/dashboard/MacroBar'
 import QuickAddBtn from '../components/dashboard/QuickAddBtn'
-import { toBnNum } from '../utils/bengaliNumber'
+
 
 // ── Greeting ────────────────────────────────────────────────────────────
 
@@ -231,7 +231,7 @@ export default function Home() {
                 style={{ color: 'var(--muted)' }}
               >
                 {t.elapsed_prefix} ·{' '}
-                <span className="font-number">{activeFast?.protocol || '১৬:৮'}</span>
+                <span className="font-number">{activeFast?.protocol || '16:8'}</span>
               </p>
             </div>
             <ChevronRight size={20} color="var(--muted)" />
@@ -265,8 +265,8 @@ export default function Home() {
                   /{' '}
                   <span className="font-number">
                     {activeFast?.targetDurationHours
-                      ? `${String(activeFast.targetDurationHours).padStart(2, '0')}:০০`
-                      : '১৬:০০'}
+                      ? `${String(activeFast.targetDurationHours).padStart(2, '0')}:00`
+                      : '16:00'}
                   </span>
                 </div>
               </div>
@@ -275,12 +275,12 @@ export default function Home() {
             <div className="flex-1 min-w-0 flex flex-col gap-2.5">
               <StageRow
                 active
-                label={timer.currentStage.bn}
-                sub={timer.currentStage.sub_bn}
+                label={timer.currentStage.en}
+                sub={timer.currentStage.sub_en}
               />
               {timer.nextStage && (
                 <StageRow
-                  label={timer.nextStage.bn}
+                  label={timer.nextStage.en}
                   sub={`${t.next_prefix} · ${fmtNextStage(nextStageRemaining)}`}
                   muted
                 />

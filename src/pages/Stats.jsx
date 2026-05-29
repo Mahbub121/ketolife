@@ -12,7 +12,7 @@ import { useT } from '../hooks/useTranslation'
 const WeightChart = lazy(() => import('../components/charts/WeightChart'))
 const FastingChart = lazy(() => import('../components/charts/FastingChart'))
 
-const weekdays = ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহ', 'শুক্র', 'শনি']
+const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 function getLast7Days() {
   const days = []
@@ -145,7 +145,7 @@ export default function Stats() {
   const weightChartData = weightEntries.map((e) => ({
     date: (() => {
       const d = new Date(e.date)
-      const months = ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রি', 'মে', 'জুন', 'জুলা', 'আগ', 'সেপ্টে', 'অক্টো', 'নভে', 'ডিসে']
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
       return `${bengaliNumber(d.getDate())} ${months[d.getMonth()]}`
     })(),
     kg: e.kg,

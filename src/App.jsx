@@ -4,7 +4,6 @@ import Layout from './components/layout/Layout'
 import useUserStore from './store/userStore'
 import useSettingsStore from './store/settingsStore'
 import { seedFoods } from './db/seedFoods'
-import { seedArticles } from './db/seedArticles'
 import Onboarding from './pages/Onboarding'
 import Home from './pages/Home'
 import Fast from './pages/Fast'
@@ -16,8 +15,6 @@ import Ketone from './pages/Ketone'
 import Water from './pages/Water'
 import Weight from './pages/Weight'
 import Stats from './pages/Stats'
-import Learn from './pages/Learn'
-import ArticleDetail from './pages/ArticleDetail'
 import Settings from './pages/Settings'
 import ProfileEdit from './pages/ProfileEdit'
 import GoalsEdit from './pages/GoalsEdit'
@@ -31,7 +28,6 @@ export default function App() {
     loadProfile()
     loadSettings()
     seedFoods()
-    seedArticles()
   }, [loadProfile, loadSettings])
 
   return (
@@ -49,8 +45,6 @@ export default function App() {
           <Route path="water" element={<Water />} />
           <Route path="weight" element={<Weight />} />
           <Route path="stats" element={<Stats />} />
-          <Route path="learn" element={<Learn />} />
-          <Route path="learn/article/:id" element={<ArticleDetail />} />
           <Route path="settings" element={<Settings />} />
           <Route path="settings/profile" element={<ProfileEdit />} />
           <Route path="settings/goals" element={<GoalsEdit />} />

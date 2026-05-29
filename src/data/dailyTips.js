@@ -1,8 +1,8 @@
 const dailyTips = [
-  'ফাস্টিং চলাকালীন প্রচুর পানি ও হিমালয়ান লবণ নিন—কেটো ফ্লু থেকে বাঁচবেন।',
-  'প্রথম খাবার ভাঙার সময় ভারী প্রোটিন এড়িয়ে অ্যাভোকাডো বা ডিম দিয়ে শুরু করুন।',
-  'অটোফেজি ১৮ ঘণ্টার পরে পূর্ণমাত্রায় শুরু হয়—সপ্তাহে ২ দিন চেষ্টা করুন।',
-  'ঘুমের আগে ৩ ঘণ্টা না খাওয়া কিটোসিস ও হরমোনের জন্য উপকারী।',
+  'Drink plenty of water and electrolytes during your fast to avoid keto flu.',
+  'Break your fast with avocado or eggs — heavy protein can spike insulin too soon.',
+  'Autophagy peaks after 18 hours. Try 2 longer fasts per week for best results.',
+  'Stop eating 3 hours before bed — it improves ketosis and sleep quality.',
 ]
 
 export default dailyTips

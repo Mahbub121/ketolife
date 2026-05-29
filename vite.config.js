@@ -9,9 +9,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icons/*.png'],
       manifest: {
-        name: 'KetoLife BD',
-        short_name: 'KetoLife',
-        description: 'আপনার কেটো ও ফাস্টিং সঙ্গী',
+        name: 'Keto Track',
+        short_name: 'KetoTrack',
+        description: 'Your keto &amp; fasting companion',
         theme_color: '#5B7F3F',
         background_color: '#FAF6EE',
         display: 'standalone',

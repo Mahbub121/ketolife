@@ -55,7 +55,7 @@ export const T = {
 
     // ── Onboarding ──
     slide_1_title: 'কেটো ও ফাস্টিং শুরু করুন',
-    slide_1_desc: 'কেটোলাইফ বিডি আপনাকে সাহায্য করবে কেটোজেনিক ডায়েট ও ইন্টারমিটেন্ট ফাস্টিং ট্র্যাক করতে।',
+    slide_1_desc: 'কেটো ট্র্যাক আপনাকে সাহায্য করবে কেটোজেনিক ডায়েট ও ইন্টারমিটেন্ট ফাস্টিং ট্র্যাক করতে।',
     slide_2_title: 'ট্র্যাক করুন আপনার ফাস্টিং',
     slide_2_desc: 'ফাস্টিং টাইমার, প্রোটোকল সিলেক্টর এবং অটোফেজি স্টেজ — সব কিছু এক জায়গায়।',
     slide_3_title: 'দেশীয় খাবারের ডাটাবেস',
@@ -307,7 +307,7 @@ export const T = {
 
     // ── Onboarding ──
     slide_1_title: 'Start Keto & Fasting',
-    slide_1_desc: 'KetoLife BD helps you track your ketogenic diet and intermittent fasting journey.',
+    slide_1_desc: 'Keto Track helps you track your ketogenic diet and intermittent fasting journey.',
     slide_2_title: 'Track Your Fasting',
     slide_2_desc: 'Fasting timer, protocol selector, and autophagy stages — all in one place.',
     slide_3_title: 'Local Food Database',

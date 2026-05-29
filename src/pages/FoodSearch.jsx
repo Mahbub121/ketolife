@@ -60,7 +60,7 @@ export default function FoodSearch() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <PageHeader title={`${meal} ${t.add_for} ${t.food_label}`} showBack />
+      <PageHeader title={`${t.add_for} ${t.food_label} — ${meal === 'সকাল' ? t.meal_breakfast : meal === 'দুপুর' ? t.meal_lunch : t.meal_dinner}`} showBack />
 
       <div className="px-4 pt-4 pb-8">
         {/* Search input */}
@@ -124,9 +124,9 @@ export default function FoodSearch() {
                 className="bg-surface rounded-xl border border-line px-4 py-3 flex items-center justify-between tap"
               >
                 <div className="flex-1 min-w-0 text-left">
-                  <p className="font-hind text-sm font-medium text-[#2C3320] truncate">{food.name_bn}</p>
+                  <p className="font-hind text-sm font-medium text-[#2C3320] truncate">{food.name_en || food.name_bn}</p>
                   <p className="font-number text-xs text-muted">
-                    C:{bengaliNumber(food.carbs_g)} F:{bengaliNumber(food.fat_g)} P:{bengaliNumber(food.protein_g)} · {bengaliNumber(food.kcal)} kcal/১০০g
+                    C:{bengaliNumber(food.carbs_g)} F:{bengaliNumber(food.fat_g)} P:{bengaliNumber(food.protein_g)} · {bengaliNumber(food.kcal)} kcal/100g
                   </p>
                 </div>
                 <ChevronRight size={16} className="text-muted ml-2 flex-shrink-0" />
@@ -139,7 +139,7 @@ export default function FoodSearch() {
         {selectedFood && (
           <div className="bg-surface rounded-xl border border-line p-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-hind font-semibold text-base text-[#2C3320">{selectedFood.name_bn}</h3>
+              <h3 className="font-hind font-semibold text-base text-[#2C3320">{selectedFood.name_en || selectedFood.name_bn}</h3>
               <button onClick={() => setSelectedFood(null)} className="tap p-1">
                 <X size={18} className="text-muted" />
               </button>

@@ -20,8 +20,7 @@ import useSettingsStore from '../store/settingsStore'
 export default function Settings() {
   const nav = useNavigate()
   const [showClearModal, setShowClearModal] = useState(false)
-  const { t, lang } = useT()
-  const updateSettings = useSettingsStore((s) => s.updateSettings)
+  const { t } = useT()
 
   const sections = [
     {
@@ -94,26 +93,6 @@ export default function Settings() {
           </div>
         ))}
 
-        {/* Language toggle */}
-        <div>
-          <h2 className="font-hind text-xs font-semibold text-muted uppercase tracking-wider mb-2 px-1">
-            {t.lang_section_header}
-          </h2>
-          <div className="bg-surface rounded-xl border border-line p-3 flex gap-2">
-            <button
-              onClick={() => updateSettings({ language: 'bn' })}
-              className={`flex-1 py-2.5 rounded-xl font-hind text-sm font-medium tap ${lang === 'bn' ? 'bg-primary text-white' : 'bg-surface border border-line text-[#2C3320]'}`}
-            >
-              {t.lang_bn}
-            </button>
-            <button
-              onClick={() => updateSettings({ language: 'en' })}
-              className={`flex-1 py-2.5 rounded-xl font-hind text-sm font-medium tap ${lang === 'en' ? 'bg-primary text-white' : 'bg-surface border border-line text-[#2C3320]'}`}
-            >
-              {t.lang_en}
-            </button>
-          </div>
-        </div>
       </div>
 
       {showClearModal && (

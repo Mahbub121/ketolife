@@ -17,7 +17,7 @@ function getLevelBadge(mmol, t) {
 
 function formatShortDate(iso) {
   const d = new Date(iso)
-  const wd = ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহ', 'শুক্র', 'শনি']
+  const wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
   return wd[d.getDay()]
 }
 

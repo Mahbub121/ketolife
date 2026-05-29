@@ -64,7 +64,7 @@ export default function FoodCustom() {
 
       <div className="px-4 pt-4 pb-8 flex flex-col gap-4">
         <p className="font-hind text-xs text-muted mb-1">
-          {t.food_will_add} <span className="font-medium text-[#2C3320]">{meal}</span> {t.for_meal}
+          {t.food_will_add} <span className="font-medium text-[#2C3320]">{meal === 'সকাল' ? t.meal_breakfast : meal === 'দুপুর' ? t.meal_lunch : t.meal_dinner}</span>
         </p>
 
         {fields.map((f) => (

@@ -1,6 +1,6 @@
 import Dexie from 'dexie'
 
-const db = new Dexie('KetoLifeBD')
+const db = new Dexie('KetoTrack')
 
 db.version(1).stores({
   userProfile: 'id',

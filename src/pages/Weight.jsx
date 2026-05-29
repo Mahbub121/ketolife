@@ -8,7 +8,7 @@ import { useT } from '../hooks/useTranslation'
 
 const WeightChart = lazy(() => import('../components/charts/WeightChart'))
 
-const months = ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রি', 'মে', 'জুন', 'জুলা', 'আগ', 'সেপ্টে', 'অক্টো', 'নভে', 'ডিসে']
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 function formatShortDate(iso) {
   const d = new Date(iso)

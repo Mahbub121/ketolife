@@ -15,7 +15,7 @@ export default function FastHistory() {
 
   const formatDate = (iso) => {
     const d = new Date(iso)
-    return `${bengaliNumber(d.getDate())} ${d.toLocaleDateString('bn', { month: 'short' })}`
+    return `${bengaliNumber(d.getDate())} ${d.toLocaleDateString('en', { month: 'short' })}`
   }
 
   return (

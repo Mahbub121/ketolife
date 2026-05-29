@@ -3,7 +3,7 @@ import db from '../db/dexie'
 
 const useSettingsStore = create((set) => ({
   palette: 'avocado',
-  language: 'bn',
+    language: 'en',
   carbLimit: 20,
   waterGoal: 3000,
   notificationsEnabled: true,
@@ -14,7 +14,7 @@ const useSettingsStore = create((set) => ({
       if (prefs) {
         set({
           palette: prefs.palette || 'avocado',
-          language: prefs.language || 'bn',
+          language: 'en',
           carbLimit: prefs.carbLimit ?? 20,
           waterGoal: prefs.waterGoal ?? 3000,
           notificationsEnabled: prefs.notificationsEnabled ?? true,
@@ -37,7 +37,7 @@ const useSettingsStore = create((set) => ({
 
   resetSettings: () => set({
     palette: 'avocado',
-    language: 'bn',
+  language: 'en',
     carbLimit: 20,
     waterGoal: 3000,
     notificationsEnabled: true,
