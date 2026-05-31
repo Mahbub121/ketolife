@@ -52,6 +52,10 @@ export const T = {
     pause_btn: 'পজ',
     end_btn: 'শেষ',
     previous_fasts: 'পূর্বের ফাস্টিং',
+    start_time_label: 'শুরুর সময় (ঐচ্ছিক)',
+    edit_start_time: 'সময় ঠিক করুন',
+    apply_btn: 'প্রয়োগ করুন',
+    start_time_warning: '৪৮ ঘণ্টার বেশি — কি নিশ্চিত?',
 
     // ── Onboarding ──
     slide_1_title: 'কেটো ও ফাস্টিং শুরু করুন',
@@ -304,6 +308,10 @@ export const T = {
     pause_btn: 'Pause',
     end_btn: 'End',
     previous_fasts: 'Previous fasts',
+    start_time_label: 'Set start time (optional)',
+    edit_start_time: 'Edit start time',
+    apply_btn: 'Apply',
+    start_time_warning: 'Over 48h elapsed — are you sure?',
 
     // ── Onboarding ──
     slide_1_title: 'Start Keto & Fasting',

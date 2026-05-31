@@ -30,7 +30,7 @@ const useFastStore = create((set, get) => ({
     }
   },
 
-  startFast: async (protocol) => {
+  startFast: async (protocol, customStartTime) => {
     const { activeFast } = get()
     set({ isLoading: true, error: null })
     try {
@@ -38,14 +38,15 @@ const useFastStore = create((set, get) => ({
         await get().endFast()
       }
       const targetDurationHours = parseProtocolHours(protocol)
+      const startTime = customStartTime || new Date().toISOString()
       const session = await createFastingSession({
         protocol,
         targetDurationHours,
-        startTime: new Date().toISOString(),
+        startTime,
       })
 
       if (Capacitor.isNativePlatform()) {
-        const endDate = new Date(Date.now() + targetDurationHours * 3600 * 1000)
+        const endDate = new Date(new Date(startTime).getTime() + targetDurationHours * 3600 * 1000)
         try {
           await LocalNotifications.schedule({
             notifications: [{
@@ -60,6 +61,39 @@ const useFastStore = create((set, get) => ({
       }
 
       set({ activeFast: session, isLoading: false })
+    } catch (err) {
+      set({ error: err.message, isLoading: false })
+    }
+  },
+
+  updateStartTime: async (fastId, newStartTime) => {
+    const { activeFast } = get()
+    if (!activeFast || activeFast.id !== fastId) return
+    set({ isLoading: true, error: null })
+    try {
+      await updateFastingSession(fastId, { startTime: newStartTime })
+      const targetDurationHours = activeFast.targetDurationHours || 16
+
+      if (Capacitor.isNativePlatform()) {
+        try {
+          await LocalNotifications.cancel({ notifications: [{ id: 1 }] })
+        } catch {
+        }
+        const endDate = new Date(new Date(newStartTime).getTime() + targetDurationHours * 3600 * 1000)
+        try {
+          await LocalNotifications.schedule({
+            notifications: [{
+              id: 1,
+              title: 'Keto Track',
+              body: 'Your fast is complete! 🎉',
+              schedule: { at: endDate },
+            }],
+          })
+        } catch {
+        }
+      }
+
+      set({ activeFast: { ...activeFast, startTime: newStartTime }, isLoading: false })
     } catch (err) {
       set({ error: err.message, isLoading: false })
     }

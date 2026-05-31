@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Play, Pause, Square, History, ChevronRight } from 'lucide-react'
+import { Play, Pause, Square, History, ChevronRight, Clock } from 'lucide-react'
 import useFastStore from '../store/fastStore'
 import useFastingTimer from '../hooks/useFastingTimer'
 import BigStageRing from '../components/timer/BigStageRing'
@@ -9,12 +9,28 @@ import PageHeader from '../components/layout/PageHeader'
 import bengaliNumber from '../utils/bengaliNumber'
 import { useT } from '../hooks/useTranslation'
 
+function isoToDatetimeLocal(iso) {
+  const d = new Date(iso)
+  const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000)
+  return local.toISOString().slice(0, 16)
+}
+
+function nowDatetimeLocal() {
+  const now = new Date()
+  return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16)
+}
+
 export default function Fast() {
   const nav = useNavigate()
   const { t, lang } = useT()
-  const { activeFast, startFast, endFast, pauseFast, resumeFast } = useFastStore()
+  const { activeFast, startFast, endFast, pauseFast, resumeFast, updateStartTime } = useFastStore()
   const timer = useFastingTimer()
   const [protocol, setProtocol] = useState('16:8')
+  const [customStartTime, setCustomStartTime] = useState('')
+  const [showStartTimePicker, setShowStartTimePicker] = useState(false)
+  const [showEditTime, setShowEditTime] = useState(false)
+  const [editTimeValue, setEditTimeValue] = useState('')
+  const [startTimeWarning, setStartTimeWarning] = useState(false)
 
   useEffect(() => {
     if (activeFast?.protocol) {
@@ -22,7 +38,21 @@ export default function Fast() {
     }
   }, [activeFast])
 
-  const handleStart = () => startFast(protocol)
+  useEffect(() => {
+    if (showEditTime && activeFast?.startTime) {
+      setEditTimeValue(isoToDatetimeLocal(activeFast.startTime))
+      setStartTimeWarning(false)
+    }
+  }, [showEditTime, activeFast])
+
+  const handleStart = () => {
+    const isoTime = customStartTime ? new Date(customStartTime).toISOString() : undefined
+    startFast(protocol, isoTime)
+    setCustomStartTime('')
+    setShowStartTimePicker(false)
+    setStartTimeWarning(false)
+  }
+
   const handlePause = () => {
     if (activeFast?.status === 'paused') {
       resumeFast()
@@ -31,6 +61,27 @@ export default function Fast() {
     }
   }
   const handleEnd = () => endFast()
+
+  const handleCustomStartTimeChange = (e) => {
+    const val = e.target.value
+    setCustomStartTime(val)
+    const elapsedMs = val ? Date.now() - new Date(val).getTime() : 0
+    setStartTimeWarning(elapsedMs > 48 * 3600 * 1000)
+  }
+
+  const handleEditTimeChange = (e) => {
+    const val = e.target.value
+    setEditTimeValue(val)
+    const elapsedMs = Date.now() - new Date(val).getTime()
+    setStartTimeWarning(elapsedMs > 48 * 3600 * 1000)
+  }
+
+  const handleApplyEditTime = () => {
+    if (!editTimeValue || !activeFast) return
+    updateStartTime(activeFast.id, new Date(editTimeValue).toISOString())
+    setShowEditTime(false)
+    setStartTimeWarning(false)
+  }
 
   const stageLabel = lang === 'en' ? timer.currentStage?.en || '' : timer.currentStage?.bn || ''
   const stageSubLabel = lang === 'en' ? timer.currentStage?.sub_en || '' : timer.currentStage?.sub_bn || ''
@@ -76,6 +127,39 @@ export default function Fast() {
           </div>
         )}
 
+        {/* Edit start time (during fast) */}
+        {timer.isFasting && (
+          <div className="w-full max-w-sm">
+            <button
+              onClick={() => setShowEditTime(!showEditTime)}
+              className="flex items-center gap-1.5 text-sm text-muted font-hind tap"
+            >
+              <Clock size={14} />
+              {t.edit_start_time}
+            </button>
+            {showEditTime && (
+              <div className="mt-2 flex flex-col gap-2">
+                <input
+                  type="datetime-local"
+                  max={nowDatetimeLocal()}
+                  value={editTimeValue}
+                  onChange={handleEditTimeChange}
+                  className="w-full rounded-lg border border-line px-3 py-2 text-sm font-hind bg-surface"
+                />
+                {startTimeWarning && (
+                  <p className="text-xs text-amber-600 font-hind">{t.start_time_warning}</p>
+                )}
+                <button
+                  onClick={handleApplyEditTime}
+                  className="self-start bg-primary text-white font-hind text-sm px-4 py-1.5 rounded-lg tap"
+                >
+                  {t.apply_btn}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Protocol selector (only when not fasting) */}
         {!timer.isFasting && (
           <div className="w-full max-w-sm">
@@ -83,6 +167,33 @@ export default function Fast() {
               {t.protocol_label}
             </label>
             <ProtocolSelector selected={protocol} onSelect={setProtocol} t={t} />
+          </div>
+        )}
+
+        {/* Start time picker (pre-start) */}
+        {!timer.isFasting && (
+          <div className="w-full max-w-sm">
+            <button
+              onClick={() => setShowStartTimePicker(!showStartTimePicker)}
+              className="flex items-center gap-1.5 text-sm text-muted font-hind tap"
+            >
+              <Clock size={14} />
+              {t.start_time_label}
+            </button>
+            {showStartTimePicker && (
+              <div className="mt-2 flex flex-col gap-2">
+                <input
+                  type="datetime-local"
+                  max={nowDatetimeLocal()}
+                  value={customStartTime}
+                  onChange={handleCustomStartTimeChange}
+                  className="w-full rounded-lg border border-line px-3 py-2 text-sm font-hind bg-surface"
+                />
+                {startTimeWarning && (
+                  <p className="text-xs text-amber-600 font-hind">{t.start_time_warning}</p>
+                )}
+              </div>
+            )}
           </div>
         )}
 
