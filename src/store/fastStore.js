@@ -1,4 +1,6 @@
 import { create } from 'zustand'
+import { Capacitor } from '@capacitor/core'
+import { LocalNotifications } from '@capacitor/local-notifications'
 import db, {
   getActiveFast,
   createFastingSession,
@@ -41,6 +43,22 @@ const useFastStore = create((set, get) => ({
         targetDurationHours,
         startTime: new Date().toISOString(),
       })
+
+      if (Capacitor.isNativePlatform()) {
+        const endDate = new Date(Date.now() + targetDurationHours * 3600 * 1000)
+        try {
+          await LocalNotifications.schedule({
+            notifications: [{
+              id: 1,
+              title: 'Keto Track',
+              body: 'Your fast is complete! 🎉',
+              schedule: { at: endDate },
+            }],
+          })
+        } catch {
+        }
+      }
+
       set({ activeFast: session, isLoading: false })
     } catch (err) {
       set({ error: err.message, isLoading: false })
@@ -63,6 +81,14 @@ const useFastStore = create((set, get) => ({
         actualDurationHours,
       }
       await updateFastingSession(activeFast.id, updates)
+
+      if (Capacitor.isNativePlatform()) {
+        try {
+          await LocalNotifications.cancel({ notifications: [{ id: 1 }] })
+        } catch {
+        }
+      }
+
       const completed = { ...activeFast, ...updates }
       set((state) => ({
         activeFast: null,

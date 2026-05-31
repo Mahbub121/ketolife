@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import { Capacitor } from '@capacitor/core'
+import { LocalNotifications } from '@capacitor/local-notifications'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import useUserStore from './store/userStore'
@@ -28,6 +30,10 @@ export default function App() {
     loadProfile()
     loadSettings()
     seedFoods()
+
+    if (Capacitor.isNativePlatform()) {
+      LocalNotifications.requestPermissions()
+    }
   }, [loadProfile, loadSettings])
 
   return (

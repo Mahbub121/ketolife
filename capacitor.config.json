@@ -1,0 +1,15 @@
+{
+  "appId": "com.ketotrack.app",
+  "appName": "Keto Track",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "backgroundColor": "#5B7F3F",
+      "launchShowDuration": 2000
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#FAF6EE"
+    }
+  }
+}
